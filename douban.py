@@ -16,17 +16,13 @@ for nums in range(10):
         pattern_description = re.compile('<span class="short">([\s\S]+)</span>')
         list_description = re.findall(pattern_description,str(cm))
         #print(list_description)
-        with open('comment2.txt','a',encoding='utf-8') as f:
+        with open('comment1.txt','a',encoding='utf-8') as f:
             f.write(list_description[0])
             f.close()
-txt=open('comment2.txt',encoding='utf-8').read()
+txt=open('comment1.txt',encoding='utf-8').read()
+res=movestopwords(txt)
 w=wordcloud.WordCloud(width=1000,font_path='C:\Windows\Fonts\msyh.ttf',height=700)
-listword=jieba.lcut(txt)
-#print(listword)
-
-result=movestopwords(listword)
-#print(result)
-
-w.generate(" ".join(jieba.lcut(result)))
+listword=jieba.lcut(res)
+w.generate(" ".join(listword))
 w.to_file("new.png")
 Count('comment1.txt','的','也','太')
