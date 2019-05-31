@@ -4,10 +4,9 @@ from selenium import webdriver
 from PIL import Image
 import requests,re,jieba,wordcloud
 import tkinter as tk
-from stopword import movestopwords
 window = tk.Tk()
 window.title('电影热评')
-window.geometry('400x200')
+window.geometry('400x150')
 e=tk.Entry(window,show=None,width=15)
 e.place(x=150,y=20)
 num=0
@@ -18,7 +17,18 @@ header={
 'Referer':'https://movie.douban.com/',
 'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36'
 }
+def stopwordslist(filepath):
+    stopwords = [line.strip() for line in open(filepath, 'r', encoding='gbk').readlines()]
+    return stopwords
 
+def movestopwords(sentence):
+    stopwords = stopwordslist('C:\Python\爬虫\Douban\sum\stopwords.txt')
+    outstr = ''
+    for word in sentence:
+        if word not in stopwords[0]:
+            if word != '\t'and'\n':
+                outstr += word
+    return outstr
 def insert_point():
     global num,name
     name=e.get()
@@ -48,7 +58,7 @@ def insert_point():
                 f.close()
 
     txt = open('.\%s.txt'%name, encoding='utf-8').read()
-    res = movestopwords(txt)
+    res = txt
     w = wordcloud.WordCloud(width=1000, font_path='C:\Windows\Fonts\msyh.ttf', height=700)
     listword = jieba.lcut(res)
     w.generate(" ".join(listword))
@@ -60,7 +70,7 @@ def show():
 b1=tk.Button(window,text='启动',width=15,
               height=2, command=insert_point).place(x=50,y=50)
 b2=tk.Button(window,text='查看词云',width=15,
-              height=2, command=show).place(x=200,y=50)
+              height=2, command=show).place(x=250,y=50)
 l1=tk.Label(window,text='请输入要查询的电影： ')
 l1.place(x=20,y=0)
 
